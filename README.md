@@ -68,7 +68,7 @@ This proof-of-concept demonstrates a complete data analysis solution that combin
 
 1. **Start the backend server**
    ```bash
-   python main.py
+  uvicorn main:app --reload
    ```
    Server will run on http://localhost:8000
 
