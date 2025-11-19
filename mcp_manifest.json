@@ -1,0 +1,124 @@
+{
+  "name": "CSV_Excel_MCP_Server",
+  "version": "1.0.0",
+  "description": "An MCP-compatible server that lets users interact with CSV/Excel files in natural language.",
+  "tools": [
+    {
+      "name": "list_files",
+      "description": "List all uploaded CSV/Excel files with their columns.",
+      "input_schema": { "type": "object", "properties": {} },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "filename": { "type": "string" },
+                "columns": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "get_columns",
+      "description": "Return all column names for a given file.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "filename": { "type": "string" }
+        },
+        "required": ["filename"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "columns": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    {
+      "name": "describe_file",
+      "description": "Provide basic statistics (row count, column count, data types) for a given file.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "filename": { "type": "string" }
+        },
+        "required": ["filename"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "row_count": { "type": "integer" },
+          "column_count": { "type": "integer" },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "dtype": { "type": "string" },
+                "non_null_count": { "type": "integer" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "query_data",
+      "description": "Perform basic queries like average, sum, or show top rows.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "filename": { "type": "string" },
+          "operation": { "type": "string" },
+          "column": { "type": "string" },
+          "n": { "type": "integer" },
+          "filter": { "type": "string" }
+        },
+        "required": ["filename", "operation"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "result": {}
+        }
+      }
+    },
+    {
+      "name": "analyze_question",
+      "description": "Analyze a question and return comprehensive file information for Q&A.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "filename": { "type": "string" },
+          "question": { "type": "string" }
+        },
+        "required": ["filename", "question"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "filename": { "type": "string" },
+          "columns": { "type": "array", "items": { "type": "string" } },
+          "description": { "type": "object" },
+          "sample_data": { "type": "array" },
+          "analyzed_operation": { "type": "string" },
+          "analyzed_column": { "type": "string" },
+          "query_result": {}
+        }
+      }
+    }
+  ]
+}
